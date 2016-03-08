@@ -1,0 +1,12 @@
+{
+  "sqliteDB" : "eisvsfiles.db",
+  "aws" : {
+    "host": "rdshost",
+    "user": "rdsuser",
+    "password": "rdspw",
+    "port": "2016",
+    "database": "eisvillageserver"
+  },
+  "accessKeyId" : "accesskey",
+  "secretAccessKey" : "secretaccesskey"
+}
