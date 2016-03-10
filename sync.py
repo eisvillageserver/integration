@@ -167,6 +167,7 @@ def pullContentData(boxID, localdb, clouddb):
 def deleteMissingFiles(boxID, localdb, clouddb):
     local = localdb.connect()
     cloud = clouddb.connect()
+
     liveuid = "SELECT UID from eisvillageserver.files WHERE BoxID = " + str(boxID);
 
     uidc = cloud.execute(liveuid)
@@ -175,26 +176,50 @@ def deleteMissingFiles(boxID, localdb, clouddb):
 
     uidl = local.execute(localuid)
 
+    cloudids = []
+    localids = []
+
+    for uid in uidc:
+        cloudids.append(uid[0])
     for uid in uidl:
-        localid = uid[0];
-        for i in uidc:
-            if localid == i[0]:
-                sql = "SELECT S3URI from files WHERE uid = '" + uid[0] + "'";
-                deletee = local.execute(sql);
-                for row in deletee:
-                    uri = row[0]
-                    #uri.replace('/', '\\')
-                    uri = uri.split("/")
-                    print uri
-                    try:
-                        os.remove(uri)
-                    except:
-                        pass
-                sql = "DELETE from files WHERE uid = '" + uid[0] + "'";
-                local.execute(sql)
+        localids.append(uid[0])
 
-# IF CANNOT FIND -> Delete row, Delete File
+    diff = list(set(localids) - set(cloudids))
+    print diff
 
+    for uid in diff:
+        sql = "SELECT S3URI from files where UID ='" + uid + "'";
+        path = local.execute(sql);
+        for p in path:
+            uri = p[0]
+            uri = uri.split("/")
+            try:
+                os.remove(uri)
+            except:
+                pass
+            sql = "DELETE from files WHERE UID = '" + uid + "'"
+            local.execute(sql);
+            print "Deleted " + uid
+
+        # if delete == True:
+        #     print "Deleting " + localid
+        #     sql = "SELECT S3URI from files WHERE UID = '" + localid + "'";
+        #     deletee = local.execute(sql);
+        #     for row in deletee:
+        #         uri = row[0]
+        #         #uri.replace('/', '\\')
+        #         uri = uri.split("/")
+        #         d = "DELETE from files WHERE UID = '" + localid + "'";
+        #         print d
+        #         hello = local.execute(d)
+        #         print "Deleted " + localid
+        #         try:
+        #             os.remove(uri)
+        #         except:
+        #             pass
+        #         delete = False;
+
+    return
 
 # FULL SYNC FUNCTION!
 def syncBoxes(boxID, localdb, clouddb):
@@ -208,16 +233,8 @@ cloud = getCloudDatabase(config["aws"]["user"], config["aws"]["password"], confi
 local = getLocalDatabase("eisvsfiles.db")
 
 #pullContentData(8, local, cloud)
-deleteMissingFiles(8, local, cloud)
+syncBoxes(8, local, cloud)
+
+#deleteMissingFiles(8, local, cloud)
 
 #copyContentData(8, local, cloud)
-
-#db_aws = create_engine('mysql://eisvillageserver:kenyaeleanorsunny16@eisvillageserver.c0rrbiu1schc.us-west-2.rds.amazonaws.com:3306')
-
-
-#db_aws.connect();
-
-# FUNCTIONS
-# - SYNC METADATA
-# - SYNC UPLOAD COUNT
-# -
