@@ -6,16 +6,16 @@
 # Need to install Sqlite from their website
 # Anything else please add!
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_restful import Resource, Api
 from flask.ext.cors import CORS
 from sqlalchemy import create_engine
 from json import dumps
 
 e = create_engine('sqlite:///eisvsfiles.db') #connect to DB
-app = Flask(__name__) # Create "app" (We are only using flask for API)
-CORS(app) # This allows us to call our API from "somewhere else"
+app = Flask(__name__,static_url_path='') # Create "app" (We are only using flask for API)
 api = Api(app)
+CORS(app)
 
 
 # Implementations of endpoints
@@ -32,14 +32,36 @@ class Categories(Resource):
     def get(self):
         conn = e.connect()
         query = conn.execute('''SELECT DISTINCT Category FROM files''')
-        result = {'categories': [i for i in query.cursor] }
+        result = {'categories': [i[0] for i in query.cursor]}
+        print result
         return result
 
+class Documents(Resource):
+    def get(self):
+        conn = e.connect()
+        query = conn.execute('''SELECT * FROM files where Category == "Document"''')
+        result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
+        return result;
+
+class FilesByID(Resource):
+    def get(self, numid):
+        conn = e.connect()
+        sql = "SELECT * FROM files WHERE UID = \'" + numid + "'"
+        print sql
+        query = conn.execute(sql)
+        result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
+        return result
 
 # List of all our endpoints
-api.add_resource(Files, '/files/<string:file_cat>', endpoint='files')
+#api.add_resource(Files, '/files/<string:file_cat>', endpoint='files')
+api.add_resource(FilesByID, '/files/<string:numid>', endpoint='FilesById')
 api.add_resource(Categories, '/categories/')
+api.add_resource(Documents, '/categories/documents')
+
+@app.route("/")
+def main():
+    return render_template('index.html')
 
 # Run the API
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
