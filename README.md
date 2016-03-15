@@ -12,7 +12,7 @@ NOTE: In the future, the integration file will deal with the api and generating 
 4. Run `python api.py`
 
 ## API
-Using your favourite rest 
+Using your favourite rest client.:
 ### GET /categories
 Returns a list of categories of files
 ### GET /categories/documents
