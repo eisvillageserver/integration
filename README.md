@@ -2,6 +2,10 @@
 
 This database repository contains the functionality to SYNC our LOCAL server with the CLOUD server in terms of file metadata and the actual files
 
+## Installation
+This package requires the following packages to be installed as follows
+* `pip install sqlalchemy`
+
 ## Running Sync
 
 ### Obtaining config.json
