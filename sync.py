@@ -233,7 +233,7 @@ cloud = getCloudDatabase(config["aws"]["user"], config["aws"]["password"], confi
 local = getLocalDatabase("eisvsfiles.db")
 
 #pullContentData(8, local, cloud)
-syncBoxes(8, local, cloud)
+#syncBoxes(8, local, cloud)
 
 #deleteMissingFiles(8, local, cloud)
 

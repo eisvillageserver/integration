@@ -1,0 +1,59 @@
+% class: article (short), report (long)
+% optionals: [...,...,...]
+% font: default 10pt
+% paper: lettersize, a4paper
+% sidings: oneside, twoside
+% orientation: landscape, portrait (default)
+
+\documentclass[10pt,lettersize]{article}
+\usepackage{ }
+\pagestyle{plain}
+
+% logistics
+\author{Eleanor Wong\and}
+\title{Title}
+\date{\today}
+
+\begin{document}
+
+% \tableofcontents is based on divided \section \subsection \subsubsection
+% \listoffigures
+
+\maketitle
+
+% \begin{abstract}
+
+% \begin{equation}
+% \end{equation}
+
+% \pagebreak
+% \newpage
+% \linebreak
+% do not hyphenate: \mbox{text}
+% opening quotes: `` (")
+% closing quotes: '' (")
+% tilde: \~{}
+% hyphenation slash: \slash
+% degrees: ^{\circ} (superscript circle)
+% ellipsis: \ldots
+% accents: \^o \^\i \'e \`e \o
+%		since i and j have to remove dots 
+% FOOTNOTES * : Hello this picture\footnote{footnote here} is
+% \underline{text}
+% \empth{text}   (italics)
+% lists: MUST BE NESTED PROPERLY
+%	\begin{itemize} simple list
+%		bullets: \item, \item[-] \item[Hello] etc.
+%	\begin{enumerate} numbered list
+% \begin{center,flushleft,flushright}
+% \begin{quote,verse}
+% code: \verb+text+ , \begin{verbatim} blah blah blah \codewilldisplay! \end{verbatim}
+% tables: \begin{tabular}[pos]{example: |c|c|c|}    | determines column borders  t: top align b: bottom aligh c: center align
+%	\hline
+
+% bibliography: 
+% graphics: include \usepackage{graphicx}
+%	\includegraphics{file}
+
+
+\end{document}
