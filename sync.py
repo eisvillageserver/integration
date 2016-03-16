@@ -136,6 +136,8 @@ def pullContentData(boxID, localdb, clouddb):
         old = "SELECT 'S3URI' from files WHERE UID = '{0}'".format(row[0])
         olddata = local.execute(old)
 
+        print olddata
+
 
         insert = "INSERT OR REPLACE INTO files ('UID', 'Title', 'Description', 'DateUploaded', 'S3URI', 'Category', 'Language', 'Country', 'DownloadCount', 'LastUpdated', 'DownloadCountSynced', 'BoxID')"
         insert += "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}')".format(row[0], row[1], row[2], row[3].strftime(f), row[4], row[5], row[6], row[7], row[8], row[9].strftime(f), 0, boxID)
@@ -148,7 +150,7 @@ def pullContentData(boxID, localdb, clouddb):
         inserted = local.execute(insert);
         updated = local.execute(update);
 
-        if (olddata != row[4]): #if s3uri's don't match
+        if (olddata != row[4] or not olddata): #if s3uri's don't match
             s3t.downloadKey(row[0]);
 
         #updated = local.execute(update);

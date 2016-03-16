@@ -10,8 +10,8 @@ box = 8;
 
 
 ## IF SETTING UP THE FIRST TIME RUN THE FOLLOWING COMMANDS
-sync.createBlankLocalTable(local)
-sync.copyContentData(box, local, cloud)
+#sync.createBlankLocalTable(local)
+#sync.copyContentData(box, local, cloud)
 
 ## IF SYNCING AFTER RUNNING FIRST TIME SETUP RUN THE FOLLOWING COMMANDS
-# sync.syncBoxes(box, local, cloud)
+sync.syncBoxes(box, local, cloud)
