@@ -9,7 +9,8 @@ NOTE: In the future, the integration file will deal with the api and generating 
 3. Run `pip install flask`
 4. Run `pip install flask_restful`
 5. Run `pip install sqlalchemy`
-4. Run `python api.py`
+6. Run `pip install flask-cors`
+7. Run `python api.py`
 
 ## API
 Using your favourite rest client.:
@@ -17,3 +18,13 @@ Using your favourite rest client.:
 Returns a list of categories of files
 ### GET /categories/documents
 Returns a list of files with the category Documents
+### GET /categories/images
+Returns a list of files with the category Images
+### GET /categories/music
+Returns a list of files with the category Music
+### GET /categories/apps
+TODO: Returns a list of files with the category Applications
+### GET /categories/videos
+Returns a list of files with category Videos
+### POST /:id
+TODO: Increase the download count of the file with UID id
