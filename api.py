@@ -43,6 +43,27 @@ class Documents(Resource):
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result;
 
+class Images(Resource):
+    def get(self):
+        conn = e.connect()
+        query = conn.execute('''SELECT * FROM files where Category == "Image"''')
+        result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
+        return result;
+
+class Videos(Resource):
+    def get(self):
+        conn = e.connect()
+        query = conn.execute('''SELECT * FROM files where Category == "Video"''')
+        result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
+        return result;
+
+class Music(Resource):
+    def get(self):
+        conn = e.connect()
+        query = conn.execute('''SELECT * FROM files where Category == "Music"''')
+        result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
+        return result
+
 class FilesByID(Resource):
     def get(self, numid):
         conn = e.connect()
@@ -57,6 +78,9 @@ class FilesByID(Resource):
 api.add_resource(FilesByID, '/files/<string:numid>', endpoint='FilesById')
 api.add_resource(Categories, '/categories/')
 api.add_resource(Documents, '/categories/documents')
+api.add_resource(Images, '/categories/images')
+api.add_resource(Videos, '/categories/videos')
+api.add_resource(Music, '/categories/music')
 
 @app.route("/")
 def main():
