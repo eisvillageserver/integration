@@ -30,6 +30,6 @@ syncBoxes runs the entire stack as follows
 ### Running sync.py
 1. Open run.py
 2. Edit the box id to the box desired
-3. If running for the first time, create a blank file named eisvsfiles.db and then run  `python run.py`
+3. If running for the first time, create a blank file named eisvsfiles.db and then run  `python run.py` with createBlankLocalTable and copyContentData functions uncommented
 4. If not running for the first time, comment out createBlankLocalTable and copyContentData and uncomment syncBoxes! Then run
 `python run.py`
