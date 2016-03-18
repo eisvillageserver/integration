@@ -38,42 +38,42 @@ class Categories(Resource):
 class Applications(Resource):
     def get(self):
         conn = e.connect()
-        query = conn.execute('''SELECT * FROM files where Category == "Application"''')
+        query = conn.execute('''SELECT * FROM files where Category == "Application" ORDER BY LastUpdated DESC''')
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result;
 
 class Documents(Resource):
     def get(self):
         conn = e.connect()
-        query = conn.execute('''SELECT * FROM files where Category == "Document"''')
+        query = conn.execute('''SELECT * FROM files where Category == "Document" ORDER BY LastUpdated DESC''')
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result
 
 class Images(Resource):
     def get(self):
         conn = e.connect()
-        query = conn.execute('''SELECT * FROM files where Category == "Image"''')
+        query = conn.execute('''SELECT * FROM files where Category == "Image" ORDER BY LastUpdated DESC''')
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result
 
 class Videos(Resource):
     def get(self):
         conn = e.connect()
-        query = conn.execute('''SELECT * FROM files where Category == "Video"''')
+        query = conn.execute('''SELECT * FROM files where Category == "Video" ORDER BY LastUpdated DESC''')
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result;
 
 class Music(Resource):
     def get(self):
         conn = e.connect()
-        query = conn.execute('''SELECT * FROM files where Category == "Music"''')
+        query = conn.execute('''SELECT * FROM files where Category == "Music" ORDER BY LastUpdated DESC''')
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result
 
 class Apps(Resource):
     def get(self):
         conn = e.connect()
-        query = conn.execute('''SELECT * FROM files where Category == "Application"''')
+        query = conn.execute('''SELECT * FROM files where Category == "Application" ORDER BY LastUpdated DESC''')
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result
 
