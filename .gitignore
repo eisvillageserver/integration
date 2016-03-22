@@ -8,3 +8,5 @@ eisvsfiles.db
 *.pyc
 
 /static/8/*
+.sass-cache
+8/

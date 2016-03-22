@@ -1,0 +1,172 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "helpers";
+
+$font-stack: Helvetica, sans-serif;
+$white: #fff;
+$lightgreen: #8da56b;
+$darkgreen: #445127;
+
+body {
+  font: 1.5em $font-stack;
+  background: url(../images/bg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: $white;
+}
+
+#container {
+  width: 80%;
+}
+
+#latest { /* Masonry container */
+    column-count: 2;
+    column-gap: 1em;
+}
+
+.grid-item { /* Masonry bricks or child elements */
+    display: inline-block;
+    margin: 0 0 0.5em;
+    width: 100%;
+}
+
+#content {
+  width: 100%;
+}
+
+#header {
+  width: 100%;
+  padding: 1em;
+  color: $white;
+
+  #title {
+    font-size: 3em;
+    text-transform: uppercase;
+    font-weight: 900;
+    text-align: center;
+  }
+
+  #subtitle {
+    font-size: 2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.category-block {
+  padding: 1em;
+
+  .info {
+    background-color: $white;
+    padding: 0.5em;
+    text-align: center;
+    color: $lightgreen;
+    font-size: 4em;
+  }
+  .name {
+    background-color: $lightgreen;
+    color: $white;
+    padding: 0.8em;
+    text-align: center;
+    font-size: 0.8em
+  }
+}
+
+.loading {
+  text-align: center;
+  font-size: 10em;
+}
+
+.document-block {
+
+  .meta {
+    background-color: $white;
+    padding: 0.8em;
+    color: $darkgreen;
+  }
+
+  .info {
+    color: $darkgreen;
+    font-size: 0.8em;
+  }
+}
+
+.image {
+  max-width: 100%;
+}
+
+#gallery {
+  text-align: center;
+}
+
+.download {
+  font-size: 3em;
+  text-align: center;
+  color: $lightgreen;
+
+
+    a {
+      color: $lightgreen;
+
+      :hover {
+        color: $darkgreen;
+      }
+    }
+}
+
+.white {
+  a {
+    color: $white;
+  }
+}
+
+#home {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  text-align: center;
+  a {
+    color: $white;
+  }
+}
+
+#return {
+  font-size: 5em;
+  text-align: center;
+
+  a {
+    color: $white;
+
+    :hover {
+      color: $lightgreen;
+    }
+  }
+}
+
+.video-info {
+  background-color: $white;
+  padding: 1em;
+  margin-bottom: 2em;
+  color: $darkgreen;
+
+  h1 {
+    color: $lightgreen;
+  }
+}
+
+.music-info {
+  background-color: $white;
+  padding: 1em;
+  margin-bottom: 2em;
+  color: $darkgreen;
+
+  h1 {
+    color: $lightgreen;
+  }
+}

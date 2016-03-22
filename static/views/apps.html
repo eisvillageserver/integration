@@ -1,0 +1,35 @@
+<div class="col-xs-12 col-centered" ng-if="!loading">
+
+  <div class="app-block col-xs-12 grid-item" ng-repeat="app in apps">
+    <div class="meta">
+      <div class="row">
+
+        <div class="info col-xs-12">
+            <h2>{{app["Title"]}}</h2>
+            <div class="date">{{app["DateUploaded"]}}</span>
+            <span class="description" ng-if="app.Description === null">{{app["Description"]}}</span>
+            <div class="description">
+              <span class="description" ng-if="app.Description !== null"><i>No Description</i></span>
+            </div>
+          </div>
+        </div>
+        <div class="download">
+          <a ng-click="dlCountService(app.UID, app.S3URI)"><i class="fa fa-download"></i></a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+
+<div class="col-xs-12 col-centered loading" ng-if="loading">
+  <i class="fa fa-spinner fa-pulse"></i>
+</div>
+
+
+<div class="row" id="return" ng-if="!loading">
+  <a href="../../#/"><i class="fa fa-reply"></i></a>
+</div>
