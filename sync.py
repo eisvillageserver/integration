@@ -32,10 +32,20 @@ with open('config.json') as c:
     config = json.load(c)
 
 # Get Local Database Engine
+# Creates a new database with correct schema if file does not exist
 def getLocalDatabase(sqliteFile):
-    local = create_engine('sqlite:///' + sqliteFile)
-    local.echo = False
-    return local
+    if os.path.isfile(sqliteFile):
+        local = create_engine('sqlite:///' + sqliteFile)
+        local.echo = False
+        return local
+    else:
+        print "Database file does not exist! Creating..."
+        f = open(sqliteFile, "w+")
+        f.write("")
+        local = create_engine('sqlite:///' + sqliteFile)
+        local.echo = False
+        tableData.create_all(local);
+        return local
 
 # Get Cloud Database Engine
 def getCloudDatabase(user, pw, server, port):
@@ -58,11 +68,6 @@ def getLastSyncedDate(boxID, clouddb):
     result = db.execute(sql)
     for row in result:
         return row[0];
-
-# For first time setup, create local sqlite database with correct columns (but empty)
-def createBlankLocalTable(localdb):
-    tableData.create_all(localdb)
-    return
 
 # Set the last synced date of the box to now
 def updateLastSynced(boxID, clouddb):

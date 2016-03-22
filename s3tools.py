@@ -34,9 +34,9 @@ def getKeyUUID ( key ):
 def downloadKey ( UUID ):
     for item in bucket:
         if ( getKeyUUID(item) == UUID ): # download file if there exists an UUID
-            folder = os.path.dirname(item.key)
+            folder = os.path.dirname("static/"+item.key)
             if not os.path.exists(folder): #make new directory only if it doesnt exist
                 os.makedirs(folder)
-            boto.s3.key.Key( bucket = bucket, name = item.key ).get_contents_to_filename(str(item.key)) #download it
+            boto.s3.key.Key( bucket = bucket, name = item.key ).get_contents_to_filename("static/" + str(item.key)) #download it
             return True
     return False

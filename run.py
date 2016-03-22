@@ -1,17 +1,37 @@
 import sync as sync
 import json
+import argparse
 
 with open('config.json') as c:
     config = json.load(c)
 
 cloud = sync.getCloudDatabase(config["aws"]["user"], config["aws"]["password"], config["aws"]["host"], config["aws"]["port"])
-local = sync.getLocalDatabase("eisvsfiles.db")
-box = 8;
+local = sync.getLocalDatabase(config["sqliteDB"])
+box   = config["boxID"]
+
+def startServer():
+    #app.run()
+    return
+
+def syncData():
+    sync.syncBoxes(box, local, cloud);
+    return
+
+def syncFirstTime():
+    sync.copyContentData(box, local, cloud);
+    return
 
 
-## IF SETTING UP THE FIRST TIME RUN THE FOLLOWING COMMANDS
-#sync.createBlankLocalTable(local)
-#sync.copyContentData(box, local, cloud)
+parser = argparse.ArgumentParser()
+parser.add_argument('--sync', action="store_true", help="Sync server with cloud database")
+parser.add_argument('--new', action="store_true", help="Create new database and sync with cloud database")
+parser.add_argument('--run', action="store_true", help="Start the Village Server Web Application")
 
-## IF SYNCING AFTER RUNNING FIRST TIME SETUP RUN THE FOLLOWING COMMANDS
-sync.syncBoxes(box, local, cloud)
+arg = parser.parse_args()
+
+if arg.sync:
+    syncData();
+elif arg.new:
+    syncFirstTime();
+else:
+    startServer();

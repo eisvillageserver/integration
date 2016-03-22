@@ -6,3 +6,5 @@ config.json
 eisvsfiles.db
 
 *.pyc
+
+/static/8/*
