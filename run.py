@@ -1,6 +1,7 @@
 import sync as sync
 import json
 import argparse
+import api as app
 
 with open('config.json') as c:
     config = json.load(c)
@@ -10,8 +11,7 @@ local = sync.getLocalDatabase(config["sqliteDB"])
 box   = config["boxID"]
 
 def startServer():
-    #app.run()
-    return
+    app.run()
 
 def syncData():
     sync.syncBoxes(box, local, cloud);
@@ -33,5 +33,7 @@ if arg.sync:
     syncData();
 elif arg.new:
     syncFirstTime();
-else:
+elif arg.run:
     startServer();
+else:
+    "Argument does not exist"

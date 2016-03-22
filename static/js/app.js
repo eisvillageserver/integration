@@ -2,7 +2,6 @@ var app = angular.module('eisApp', ['ngRoute']);
 
 host = 'http://localhost:5000/' //Change to RPI's static ip address 'http://ipRpi:5000/'
 
-
 $("#container").masonry({
   columnWidth: '.grid-item',
   itemSelector: '.grid-item'
