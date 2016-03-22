@@ -80,8 +80,11 @@ class Apps(Resource):
 class Count(Resource):
     def post(self, uid):
         conn = e.connect()
-        sql = "UPDATE files SET 'DownloadCount' = DownloadCount+1,'DownloadCountSynced'=0 WHERE UID = '" + uid + "'"
+        print "connnected"
+        sql = "UPDATE files SET 'DownloadCount' = DownloadCount+1,'DownloadCountSynced'=0 WHERE 'UID'='" + uid + "'"
+        print sql
         query = conn.execute(sql)
+        print query
         return "Downloaded!"
 
 # List of all our endpoints
@@ -100,4 +103,4 @@ def main():
 
 # Run the API
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, threaded=True)
+    app.run(host='0.0.0.0', port=5000, threaded=True, debug=True)

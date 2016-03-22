@@ -1,0 +1,99 @@
+<div class="row latest" style="padding:0" ng-if="!loading">
+
+  <div class="all-block col-xs-12 col-md-6" id="latest" ng-repeat="f in files">
+    <div class="grid-item" ng-if="f.Category == 'Image'">
+      <div class="thumbnail">
+        <img ng-src="{{f.S3URI}}"/>
+        <div class="download">
+          <a ng-click="dlCountService(f.UID, f.S3URI)"><i class="fa fa-download"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="grid-item" ng-if="f.Category == 'Music'">
+      <audio controls>
+        <source ng-src="{{f.S3URI}}" type="audio/mpeg">
+
+      Your browser does not support the audio element.
+      </audio>
+      <div class="music-info">
+        <h1>{{f.Title}}</h1>
+        {{f.Description}}
+        <div class="download">
+          <a ng-click="dlCountService(f.UID, f.S3URI)"><i class="fa fa-download"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="grid-item" ng-if="f.Category == 'Video'">
+      <video width="100%" controls>
+        <source ng-src="{{f.S3URI}}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="video-info">
+        <h1>{{f.Title}}</h1>
+        {{f.Description}}
+        <div class="download">
+          <a ng-click="dlCountService(f.UID, f.S3URI)"><i class="fa fa-download"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="grid-item" ng-if="f.Category == 'Document'">
+      <div class="document-block">
+        <div class="meta">
+          <div class="row">
+
+            <div class="info col-xs-12">
+                <h2>{{f["Title"]}}</h2>
+                <!-- <div class="date">{{f["DateUploaded"]}}</span> -->
+                <span class="description" ng-if="f.Description === null">{{f["Description"]}}</span>
+                <div class="description">
+                  <span class="description" ng-if="f.Description !== null"><i>No Description</i></span>
+                </div>
+                <div class="download">
+                  <a ng-click="dlCountService(f.UID, f.S3URI)"><i class="fa fa-download"></i></a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="grid-item" ng-if="f.Category == 'Application'">
+      <div class="document-block">
+        <div class="meta">
+          <div class="row">
+
+            <div class="info col-xs-12">
+                <h2>{{f["Title"]}}</h2>
+                <!-- <div class="date">{{f["DateUploaded"]}}</span> -->
+                <span class="description" ng-if="f.Description === null">{{f["Description"]}}</span>
+                <div class="description">
+                  <span class="description" ng-if="f.Description !== null"><i>No Description</i></span>
+                </div>
+                <div class="download">
+                  <a ng-click="dlCountService(f.UID, f.S3URI)"><i class="fa fa-download"></i></a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="col-xs-12 col-centered loading" ng-if="loading">
+  <i class="fa fa-spinner fa-pulse"></i>
+</div>
+
+
+<div class="row" id="return" ng-if="!loading">
+  <a href="../../#/"><i class="fa fa-reply"></i></a>
+</div>
