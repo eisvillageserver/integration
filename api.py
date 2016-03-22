@@ -11,11 +11,11 @@ from flask_restful import Resource, Api
 from flask.ext.cors import CORS
 from sqlalchemy import create_engine
 from json import dumps
+import api as app
 
 e = create_engine('sqlite:///eisvsfiles.db') #connect to DB
 app = Flask(__name__,static_url_path='') # Create "app" (We are only using flask for API)
 api = Api(app)
-CORS(app)
 
 
 # Implementations of endpoints
@@ -102,5 +102,6 @@ def main():
     return render_template('index.html')
 
 # Run the API
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, threaded=True, debug=True)
+def run():
+    if __name__ == '__main__':
+        app.run(host='0.0.0.0', port=5000, threaded=True, debug=True)
