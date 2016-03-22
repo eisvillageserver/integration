@@ -2,7 +2,7 @@ test.py
 Thumbs.db
 *.jpeg
 *.png
-3/Image/VJhZVRksl-fdafadf
-0/Image/V1uofC1ix-dakjlkdf
-*.csv
-3/Image/4yUF7AJsl-test2
+config.json
+eisvsfiles.db
+
+*.pyc
