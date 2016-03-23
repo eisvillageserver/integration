@@ -1,3 +1,21 @@
+# integration
+This repository is a combination of 3 previous repositories: database, webapp and api. The relevant information about running all of the individual components are below.
+
+The three functions integration currently serve are:
+* python run.py --new
+* python run.py --sync
+* python run.py --run
+
+
+## --new
+This command will create a new database file based on the name in the config file and download all the relevant content from AWS S3 into the static folder. This should only be run once when you first setup the box.
+
+## --sync
+This command syncs the boxes current data with the database on AWS. This includes deleting missing files, pushing download count and downloading new files
+
+## --run
+This command runs the server, webapp and api all in one :) 
+
 # database
 
 This database repository contains the functionality to SYNC our LOCAL server with the CLOUD server in terms of file metadata and the actual files
