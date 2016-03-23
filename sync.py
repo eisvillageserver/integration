@@ -198,13 +198,15 @@ def deleteMissingFiles(boxID, localdb, clouddb):
         path = local.execute(sql);
         for p in path:
             uri = p[0]
-            uri = uri.split("/")
+            uri = "static/" + uri
             try:
+                print "Removed File: " + uri
                 os.remove(uri)
-            except:
+            except Exception:
+                print "File Does not Exist: Pass"
                 pass
             sql = "DELETE from files WHERE UID = '" + uid + "'"
-            local.execute(sql);
+            #local.execute(sql);
             print "Deleted " + uid
 
         # if delete == True:

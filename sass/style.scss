@@ -100,6 +100,12 @@ body {
 
 .image {
   max-width: 100%;
+
+  .description {
+    color: $darkgreen;
+    font-size: 0.9em;
+    margin: 0.5em;
+  }
 }
 
 #gallery {

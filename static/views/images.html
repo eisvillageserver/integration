@@ -13,6 +13,10 @@
 
           <img ng-src="../../{{showImage.S3URI}}"/>
 
+          <div ng-if="showImage.Description !== 'null'" class="description">
+            {{showImage.Description}}
+          </div>
+
                 <div class="download">
                   <a  ng-click="dlCountService(showImage.UID, showImage.S3URI)"><i class="fa fa-download"></i></a>
                 </div>
