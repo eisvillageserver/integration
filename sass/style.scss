@@ -94,12 +94,17 @@ body {
 
   .info {
     color: $darkgreen;
-    font-size: 0.8em;
+  }
+
+  h1 {
+    color: $lightgreen;
   }
 }
 
 .image {
   max-width: 100%;
+  padding: 0.9em;
+  color: $darkgreen;
 
   .description {
     color: $darkgreen;

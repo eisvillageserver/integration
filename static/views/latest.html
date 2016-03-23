@@ -2,8 +2,11 @@
 
   <div class="all-block col-xs-12 col-md-6" id="latest" ng-repeat="f in files">
     <div class="grid-item" ng-if="f.Category == 'Image'">
-      <div class="thumbnail">
+      <div class="image thumbnail">
         <img ng-src="{{f.S3URI}}"/>
+        <div class="description" ng-if="f.Description !== 'null'">
+          {{f.Description}}
+        </div>
         <div class="download">
           <a ng-click="dlCountService(f.UID, f.S3URI)"><i class="fa fa-download"></i></a>
         </div>
@@ -17,7 +20,9 @@
       </audio>
       <div class="music-info">
         <h1>{{f.Title}}</h1>
-        {{f.Description}}
+        <div ng-if="f.Description !== 'null'">
+          {{f.Description}}
+        </div>
         <div class="download">
           <a ng-click="dlCountService(f.UID, f.S3URI)"><i class="fa fa-download"></i></a>
         </div>
@@ -30,7 +35,9 @@
       </video>
       <div class="video-info">
         <h1>{{f.Title}}</h1>
-        {{f.Description}}
+        <div ng-if="f.Description !== 'null'">
+          {{f.Description}}
+        </div>
         <div class="download">
           <a ng-click="dlCountService(f.UID, f.S3URI)"><i class="fa fa-download"></i></a>
         </div>
@@ -42,11 +49,10 @@
           <div class="row">
 
             <div class="info col-xs-12">
-                <h2>{{f["Title"]}}</h2>
+                <h1>{{f["Title"]}}</h1>
                 <!-- <div class="date">{{f["DateUploaded"]}}</span> -->
-                <span class="description" ng-if="f.Description === null">{{f["Description"]}}</span>
-                <div class="description">
-                  <span class="description" ng-if="f.Description !== null"><i>No Description</i></span>
+                <div ng-if="f.Description !== 'null'">
+                  {{f.Description}}
                 </div>
                 <div class="download">
                   <a ng-click="dlCountService(f.UID, f.S3URI)"><i class="fa fa-download"></i></a>
@@ -67,11 +73,10 @@
           <div class="row">
 
             <div class="info col-xs-12">
-                <h2>{{f["Title"]}}</h2>
+                <h1>{{f["Title"]}}</h1>
                 <!-- <div class="date">{{f["DateUploaded"]}}</span> -->
-                <span class="description" ng-if="f.Description === null">{{f["Description"]}}</span>
-                <div class="description">
-                  <span class="description" ng-if="f.Description !== null"><i>No Description</i></span>
+                <div ng-if="f.Description !== 'null'">
+                  {{f.Description}}
                 </div>
                 <div class="download">
                   <a ng-click="dlCountService(f.UID, f.S3URI)"><i class="fa fa-download"></i></a>
