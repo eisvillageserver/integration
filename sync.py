@@ -5,13 +5,12 @@ import datetime
 import json
 import urllib2
 import sqlalchemy as sa
-
 import s3tools as s3t
 
-f = '%Y-%m-%d %H:%M:%S'
+f = '%Y-%m-%d %H:%M:%S' # date format for SQL Datetime to go into our database
 
+# Table Schema used to create database table when initializing database
 tableData = MetaData()
-
 files = Table('files', tableData,
     Column('UID', VARCHAR(255), primary_key=True),
     Column('Title', VARCHAR(255)),
@@ -31,8 +30,9 @@ files = Table('files', tableData,
 with open('config.json') as c:
     config = json.load(c)
 
-# Get Local Database Engine
+# Get Local Database Engine used with sqlalchemy
 # Creates a new database with correct schema if file does not exist
+# requires: sqliteFile - string of database file name
 def getLocalDatabase(sqliteFile):
     if os.path.isfile(sqliteFile):
         local = create_engine('sqlite:///' + sqliteFile)
@@ -47,7 +47,8 @@ def getLocalDatabase(sqliteFile):
         tableData.create_all(local);
         return local
 
-# Get Cloud Database Engine
+# Gets the engine for the cloud database engine
+# requires: username, password, server, port (retrievable from AWS)
 def getCloudDatabase(user, pw, server, port):
     cloud = create_engine('mysql+pymysql://' + user + ':' + pw + '@' + server + ':' + port)
     cloud.echo = False
@@ -75,15 +76,15 @@ def updateLastSynced(boxID, clouddb):
     sql = "UPDATE eisvillageserver.boxes  SET LastSynced = '" + datetime.datetime.now().strftime(f) + "' WHERE (BoxID = " + str(boxID) + ")";
     print sql
     cloud.execute(sql)
-
     return
 
-# For first time setup, copy entire aws file information to local db and download all files
+# If initializing database for the first time, copy all relevant rows from the
+# files database and download all content for a specific boxID
 def copyContentData(boxID, localdb, clouddb):
     cloud = clouddb.connect()
     local = localdb.connect()
 
-    # GET DATA
+    # Grabs data
     sql = "SELECT * from eisvillageserver.files WHERE boxID =" + str(boxID)
     rows = cloud.execute(sql)
     for row in rows:
@@ -91,13 +92,13 @@ def copyContentData(boxID, localdb, clouddb):
 
     resetDownloadCountSynced(localdb);
 
-    sql = "SELECT UID from files"
+    sql = "SELECT UID from files"  # Find all UIDs so they can be downloaded
     rows = local.execute(sql);
 
     for row in rows:
         s3t.downloadKey(row[0]);
 
-    updateLastSynced(boxID, clouddb)
+    updateLastSynced(boxID, clouddb) # Set last synced to now!
 
     return
 
@@ -107,7 +108,9 @@ def resetDownloadCountSynced(localdb):
     sql = "UPDATE files SET 'DownloadCountSynced' = 0"
     local.execute(sql)
 
-# Update download count to cloud
+# Update download count to cloud, resets local download count back to 0
+# after update and sets DownloadCountSynced to true so unless the download
+# count is updated, stale information isn't constantly pushed
 def pushDownloadCount(localdb, clouddb):
     local = localdb.connect()
     cloud = clouddb.connect()
@@ -127,16 +130,19 @@ def pushDownloadCount(localdb, clouddb):
 
     return
 
-# Pull new file information AND update file
+# Pull content data syncs the local database with the cloud database, pulling any
+# new files/renaming files to match the S3 bucket and database on AWS
 def pullContentData(boxID, localdb, clouddb):
     lastSynced = getLastSyncedDate(boxID, clouddb)
     cloud = clouddb.connect()
     local = localdb.connect()
 
+    # Grab all files from AWS that have been updated since our last sync
     sql = "SELECT * from eisvillageserver.files WHERE LastUpdated >= '" + lastSynced.strftime(f) + "' AND BoxID = " + str(boxID)
 
     result = cloud.execute(sql);
 
+    # insert the file to the database if it does not exist, else update
     for row in result:
         old = "SELECT 'S3URI' from files WHERE UID = '{0}'".format(row[0])
         olddata = local.execute(old)
@@ -153,9 +159,9 @@ def pullContentData(boxID, localdb, clouddb):
         inserted = local.execute(insert);
         updated = local.execute(update);
 
-        if (olddata != row[4] or not olddata): #if s3uri's don't match
+        if (olddata != row[4] or not olddata): #if new url doesn't match old one
             print row[0]
-            s3t.downloadKey(row[0]);
+            s3t.downloadKey(row[0]);    # download the new file
 
         #updated = local.execute(update);
 
@@ -166,10 +172,9 @@ def pullContentData(boxID, localdb, clouddb):
     return
 
 
-    # if last updated date online file is more recent than local file, pull info, download file
-    # set last updated to now for online and localdb
-
-# Delete files and database info if not present
+# Checks local database against cloud database, if a file or entry exists in
+# local but doesn't in the cloud, the file gets deleted. This is run first
+# to minimize the amount of files we'll actually have to download.
 def deleteMissingFiles(boxID, localdb, clouddb):
     local = localdb.connect()
     cloud = clouddb.connect()
@@ -191,7 +196,6 @@ def deleteMissingFiles(boxID, localdb, clouddb):
         localids.append(uid[0])
 
     diff = list(set(localids) - set(cloudids))
-    print diff
 
     for uid in diff:
         sql = "SELECT S3URI from files where UID ='" + uid + "'";
@@ -206,30 +210,15 @@ def deleteMissingFiles(boxID, localdb, clouddb):
                 print "File Does not Exist: Pass"
                 pass
             sql = "DELETE from files WHERE UID = '" + uid + "'"
-            #local.execute(sql);
+            local.execute(sql);
             print "Deleted " + uid
-
-        # if delete == True:
-        #     print "Deleting " + localid
-        #     sql = "SELECT S3URI from files WHERE UID = '" + localid + "'";
-        #     deletee = local.execute(sql);
-        #     for row in deletee:
-        #         uri = row[0]
-        #         #uri.replace('/', '\\')
-        #         uri = uri.split("/")
-        #         d = "DELETE from files WHERE UID = '" + localid + "'";
-        #         print d
-        #         hello = local.execute(d)
-        #         print "Deleted " + localid
-        #         try:
-        #             os.remove(uri)
-        #         except:
-        #             pass
-        #         delete = False;
 
     return
 
 # FULL SYNC FUNCTION!
+# Missing files are deleted first to reduce the amount of queries we'll have to run
+# Download count is then pushed to the cloud
+# Files and metadata are then synced
 def syncBoxes(boxID, localdb, clouddb):
     deleteMissingFiles(boxID, localdb, clouddb)
     pushDownloadCount(localdb, clouddb)
@@ -237,12 +226,6 @@ def syncBoxes(boxID, localdb, clouddb):
     return
 
 
-cloud = getCloudDatabase(config["aws"]["user"], config["aws"]["password"], config["aws"]["host"], config["aws"]["port"])
-local = getLocalDatabase("eisvsfiles.db")
-
-#pullContentData(8, local, cloud)
-#syncBoxes(8, local, cloud)
-
-#deleteMissingFiles(8, local, cloud)
-
-#copyContentData(8, local, cloud)
+## BELOW ARE EXAMPLES OF USING THE DATABASE FUNCTIONS
+# cloud = getCloudDatabase(config["aws"]["user"], config["aws"]["password"], config["aws"]["host"], config["aws"]["port"])
+# local = getLocalDatabase("eisvsfiles.db")

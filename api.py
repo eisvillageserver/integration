@@ -10,17 +10,22 @@ from flask import Flask, request, render_template
 from flask_restful import Resource, Api
 from flask.ext.cors import CORS
 from sqlalchemy import create_engine
+import json
 from json import dumps
 import api as app
 
-e = create_engine('sqlite:///eisvsfiles.db') #connect to DB
-app = Flask(__name__,static_url_path='') # Create "app" (We are only using flask for API)
-api = Api(app)
+with open('config.json') as c:
+    config = json.load(c)
+
+e = create_engine('sqlite:///' + config["sqliteDB"]) #connect to DB
+app = Flask(__name__,static_url_path='') # Initializing our app
+api = Api(app) #initializing the API
 
 
 # Implementations of endpoints
 ## TODO: merge all the category endpoints
 
+# Gets the latest 10 files form the database
 class Latest(Resource):
     def get(self):
         conn = e.connect()
@@ -28,6 +33,7 @@ class Latest(Resource):
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result;
 
+# Gets a list of categories from the database
 class Categories(Resource):
     def get(self):
         conn = e.connect()
@@ -35,6 +41,7 @@ class Categories(Resource):
         result = {'categories': [i[0] for i in query.cursor]}
         return result
 
+# Gets a list of files with category Application from database
 class Applications(Resource):
     def get(self):
         conn = e.connect()
@@ -42,6 +49,7 @@ class Applications(Resource):
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result;
 
+# Gets a list of files with category Document from database
 class Documents(Resource):
     def get(self):
         conn = e.connect()
@@ -49,6 +57,7 @@ class Documents(Resource):
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result
 
+# Gets a list of files with category Image from database
 class Images(Resource):
     def get(self):
         conn = e.connect()
@@ -56,6 +65,7 @@ class Images(Resource):
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result
 
+# Gets a list of files with category Videos from database
 class Videos(Resource):
     def get(self):
         conn = e.connect()
@@ -63,6 +73,7 @@ class Videos(Resource):
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result;
 
+# Gets a list of files with category Music from database
 class Music(Resource):
     def get(self):
         conn = e.connect()
@@ -70,13 +81,7 @@ class Music(Resource):
         result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
         return result
 
-class Apps(Resource):
-    def get(self):
-        conn = e.connect()
-        query = conn.execute('''SELECT * FROM files where Category == "Application" ORDER BY LastUpdated DESC''')
-        result = {'files': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
-        return result
-
+# Sends a post request to increase the download count of a specified UID by 1
 class Count(Resource):
     def post(self, uid):
         conn = e.connect()
