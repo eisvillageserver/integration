@@ -23,7 +23,7 @@ This database repository contains the functionality to SYNC our LOCAL server wit
 ## Installation
 This package requires the following packages to be installed as follows
 * `pip install sqlalchemy`
-* `pip install boto3`
+* `pip install boto`
 * `pip install pymysql`
 * `pip install flask`
 * `pip install flask_restful`
