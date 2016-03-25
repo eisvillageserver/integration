@@ -25,11 +25,8 @@ This package requires the following packages to be installed as follows
 * `pip install sqlalchemy`
 * `pip install boto3`
 * `pip install pymysql`
-* `pip install boto`
 * `pip install flask`
 * `pip install flask_restful`
-* `pip install sqlalchemy`
-* `pip install flask-cors`
 
 
 ## Running Sync
