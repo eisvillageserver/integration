@@ -8,7 +8,6 @@
 
 from flask import Flask, request, render_template
 from flask_restful import Resource, Api
-from flask.ext.cors import CORS
 from sqlalchemy import create_engine
 import json
 from json import dumps
