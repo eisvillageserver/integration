@@ -85,7 +85,7 @@ class Count(Resource):
     def post(self, uid):
         conn = e.connect()
         print "connnected"
-        sql = "UPDATE files SET 'DownloadCount' = DownloadCount+1,'DownloadCountSynced'=0 WHERE 'UID'='" + uid + "'"
+        sql = "UPDATE files SET 'DownloadCount' = DownloadCount+1,'DownloadCountSynced'=0 WHERE UID='" + uid + "'"
         print sql
         query = conn.execute(sql)
         print query
