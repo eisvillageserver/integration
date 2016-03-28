@@ -8,7 +8,6 @@
 
 from flask import Flask, request, render_template
 from flask_restful import Resource, Api
-from flask.ext.cors import CORS
 from sqlalchemy import create_engine
 import json
 from json import dumps
@@ -86,7 +85,7 @@ class Count(Resource):
     def post(self, uid):
         conn = e.connect()
         print "connnected"
-        sql = "UPDATE files SET 'DownloadCount' = DownloadCount+1,'DownloadCountSynced'=0 WHERE 'UID'='" + uid + "'"
+        sql = "UPDATE files SET 'DownloadCount' = DownloadCount+1,'DownloadCountSynced'=0 WHERE UID='" + uid + "'"
         print sql
         query = conn.execute(sql)
         print query

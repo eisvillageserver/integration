@@ -1,9 +1,7 @@
-import boto3
 import boto
 import sys,os
 import json
 from boto.s3.connection import S3Connection
-import urllib
 import re
 
 with open('config.json') as c:
