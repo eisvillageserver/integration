@@ -1,6 +1,6 @@
 <div class="row latest" style="padding:0" ng-if="!loading">
 
-  <div class="all-block col-xs-12 col-md-6" id="latest" ng-repeat="f in files">
+  <div class="all-block col-xs-12 col-md-12" id="latest" ng-repeat="f in files">
     <div class="grid-item" ng-if="f.Category == 'Image'">
       <div class="image thumbnail">
         <img ng-src="{{f.S3URI}}"/>

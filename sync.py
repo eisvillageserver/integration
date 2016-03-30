@@ -73,7 +73,7 @@ def getLastSyncedDate(boxID, clouddb):
 # Set the last synced date of the box to now
 def updateLastSynced(boxID, clouddb):
     cloud = clouddb.connect()
-    sql = "UPDATE eisvillageserver.boxes  SET LastSynced = '" + datetime.datetime.now().strftime(f) + "' WHERE (BoxID = " + str(boxID) + ")";
+    sql = "UPDATE eisvillageserver.boxes  SET LastSynced = UTC_TIMESTAMP() WHERE (BoxID = " + str(boxID) + ")";
     print sql
     cloud.execute(sql)
     return
