@@ -16,9 +16,6 @@ This command syncs the boxes current data with the database on AWS. This include
 ## --run
 This command runs the server, webapp and api all in one :)
 
-# database
-
-This database repository contains the functionality to SYNC our LOCAL server with the CLOUD server in terms of file metadata and the actual files
 
 ## Installation
 This package requires the following packages to be installed as follows
@@ -28,6 +25,7 @@ This package requires the following packages to be installed as follows
 * `pip install flask`
 * `pip install flask_restful`
 
+In addition, you will need to go to /static/js/app.js and change the host value to whatever IP your raspberry pi is using (https://github.com/eisvillageserver/integration/blob/master/static/js/app.js line 3)
 
 ## Running Sync
 
