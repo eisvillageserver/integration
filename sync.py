@@ -144,16 +144,23 @@ def pullContentData(boxID, localdb, clouddb):
 
     result = cloud.execute(sql);
 
-    for row in result:
-        print row[0]
-
     # insert the file to the database if it does not exist, else update
     for row in result:
-        old = "SELECT 'S3URI' from files WHERE UID = '{0}'".format(row[0])
+        old = "SELECT S3URI from files WHERE UID = '{0}'".format(row[0])
         olddata = local.execute(old)
 
-        if (olddata != row[4] or not olddata): #if new url doesn't match old one
-            print row[0]
+        s3u = ''
+
+        for r in olddata:
+            s3u = r[0];
+
+        if (s3u != row[4] or not s3u): #if new url doesn't match old one
+            try:
+                print s3u
+                os.remove('static/' + s3u);
+                print 'removing duplicate'
+            except Exception:
+                pass
             s3t.downloadKey(row[0]);    # download the new file
 
 
