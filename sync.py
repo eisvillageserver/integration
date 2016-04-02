@@ -223,10 +223,10 @@ def deleteMissingFiles(boxID, localdb, clouddb):
 # Download count is then pushed to the cloud
 # Files and metadata are then synced
 def syncBoxes(boxID, localdb, clouddb):
-    updateLastSynced(boxID, clouddb)
     deleteMissingFiles(boxID, localdb, clouddb)
     pushDownloadCount(localdb, clouddb)
     pullContentData(boxID, localdb, clouddb)
+    updateLastSynced(boxID, clouddb)
     return
 
 
