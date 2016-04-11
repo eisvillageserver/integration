@@ -52,7 +52,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--sync', action="store_true", help="Sync server with cloud database")
 parser.add_argument('--new', action="store_true", help="Create new database and sync with cloud database. DO NOT RUN THIS WHILE CONNECTED TO THE INTERNET VIA GSM")
 parser.add_argument('--run', action="store_true", help="Start the Village Server Web Application")
-parser.add_argument('--load', action="store_true", help="Sync and then Start the Server")
 arg = parser.parse_args()
 
 if arg.sync:
@@ -62,13 +61,6 @@ elif arg.new:
     syncFirstTime();
 
 elif arg.run:
-    startServer();
-
-elif arg.load:
-    if os.path.isfile("eisvsfiles.db"):
-        syncData();
-    elif os.path.isfile("eisvsfiles.db"):
-        syncFirstTime();
     startServer();
 
 else:
