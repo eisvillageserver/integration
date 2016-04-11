@@ -15,18 +15,13 @@ def setupGSMPins(netStat, pwrStat, key, reset):
     GPIO.setup(reset, GPIO.OUT, initial=1)
     return True
 
-#Check if gsm is on or off
-#Input is high if ON, low if OFF
-def isPwrOnGSM(pwrStat):
-    return GPIO.input(pwrStat)
-
-#Switch from on to off or off to on
-#To switch GSM on/off, pull key down for 2 seconds
-def switchPwrStatGSM(key):
-    GPIO.output(key, GPIO.LOW)
-    sleep(3)
+#Change the power state of the gsm. state: 0 OFF, 1 ON
+def pwrStateGSM(key, pwrStat, state):
     GPIO.output(key,GPIO.HIGH)
-    return True
+    GPIO.output(key,GPIO.LOW)
+    while (GPIO.input(pwrStat) != state):
+        pass
+    GPIO.output(key,GPIO.HIGH)
 
 #Reset gsm if caught in bad state
 #To hard reset, pull reset pin low for 100ms
@@ -41,10 +36,4 @@ def setupLedPins(Led1Pin, Led2Pin, Led3Pin):
     GPIO.setup(Led1Pin, GPIO.OUT, initial=0)
     GPIO.setup(Led2Pin, GPIO.OUT, initial=0)
     GPIO.setup(Led3Pin, GPIO.OUT, initial=0)
-    return True
-
-#set brightness on scale of 0-100, software pwn used to dim the Led
-def setLedBrightness(brightness,LedPin):
-    PWM = GPIO.PWN(LedPin,100)
-    PWM.start(brightness)
     return True
