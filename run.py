@@ -4,9 +4,6 @@ import argparse
 import api as app
 import gsmLed as hardware
 import RPi.GPIO as GPIO
-import subprocess
-import os.path
-import time
 
 onLed, syncLed, serverLed  = 22, 27 ,17
 gsmNetStat, gsmPwrStat, gsmKey, gsmReset = 24, 18, 23, 25
@@ -23,15 +20,6 @@ cloud = sync.getCloudDatabase(config["aws"]["user"], config["aws"]["password"], 
 local = sync.getLocalDatabase(config["sqliteDB"])
 box   = config["boxID"]
 
-def preSync():
-    GPIO.output(syncLed,True)
-    hardware.pwrStateGSM(gsmKey, gsmPwrStat, 1); #Switch GSM on
-    subprocess.call("sudo service ntp restart", shell=True); #Sync Time,see S3 request time too skewed
-
-def postSync():
-    hardware.pwrStateGSM(gsmKey, gsmPwrStat, 0); #switch GSM OFF
-    GPIO.output(syncLed,False);
-
 def startServer():
     GPIO.output(serverLed,True);
     app.run();
@@ -39,11 +27,11 @@ def startServer():
 
 def syncData():
     try:
-        preSync();
+        hardware.preSync();
         sync.syncBoxes(box, local, cloud);
-        postSync();
     except:
-        postSync();
+        print "Sync Error"
+    hardware.postSync();
 
 def syncFirstTime():
     sync.copyContentData(box, local, cloud);

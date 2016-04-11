@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import sys
 import time
 import os
+import subprocess
 #Use BCM setup for RASPI
 #Recommended pinout (compatible with ALL raspi verisons)
 #Led1=22, Led2=27, Led3=17
@@ -37,3 +38,12 @@ def setupLedPins(Led1Pin, Led2Pin, Led3Pin):
     GPIO.setup(Led2Pin, GPIO.OUT, initial=0)
     GPIO.setup(Led3Pin, GPIO.OUT, initial=0)
     return True
+
+def preSync():
+    GPIO.output(syncLed,True)
+    hardware.pwrStateGSM(gsmKey, gsmPwrStat, 1); #Switch GSM on
+    subprocess.call("sudo service ntp restart", shell=True); #Sync Time,see S3 request time too skewed
+
+def postSync():
+    hardware.pwrStateGSM(gsmKey, gsmPwrStat, 0); #switch GSM OFF
+    GPIO.output(syncLed,False);
